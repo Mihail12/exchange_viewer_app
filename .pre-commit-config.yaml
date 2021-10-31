@@ -1,0 +1,88 @@
+default_language_version:
+    python: python3.10
+
+default_stages: [commit, push]
+
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.4.0
+    hooks:
+    -   id: check-added-large-files
+        args:
+        -   --maxkb=128
+    -   id: check-ast
+    -   id: check-builtin-literals
+        args:
+        -   --no-allow-dict-kwargs
+    -   id: check-case-conflict
+    -   id: check-json
+    -   id: check-merge-conflict
+    -   id: check-xml
+    -   id: check-yaml
+    -   id: debug-statements
+    -   id: detect-private-key
+    -   id: double-quote-string-fixer
+    -   id: end-of-file-fixer
+    -   id: fix-encoding-pragma
+        args:
+        -   --remove
+    -   id: file-contents-sorter
+    -   id: forbid-new-submodules
+    -   id: no-commit-to-branch
+        args:
+        -   --branch=master --branch=staging
+    -   id: pretty-format-json
+        args:
+        -   --autofix
+    -   id: requirements-txt-fixer
+    -   id: sort-simple-yaml
+    -   id: trailing-whitespace
+
+-   repo: https://github.com/timothycrosley/isort
+    rev: 5.7.0
+    hooks:
+    -   id: isort
+        additional_dependencies: [toml]
+        args:
+        -   --filter-files
+        -   --profile=black
+
+-   repo: https://github.com/asottile/pyupgrade
+    rev: v2.9.0
+    hooks:
+    -   id: pyupgrade
+        args:
+        -   --py38-plus
+
+-   repo: https://github.com/psf/black
+    rev: 20.8b1
+    hooks:
+    -   id: black
+        exclude: migrations|tests
+        args:
+        -   --line-length=120
+        -   --target-version=py38
+        -   --skip-string-normalization
+
+-   repo: https://github.com/asottile/add-trailing-comma
+    rev: v2.1.0
+    hooks:
+    -   id: add-trailing-comma
+        args:
+        -   --py36-plus
+
+-   repo: https://gitlab.com/pycqa/flake8
+    rev: 3.8.4
+    hooks:
+    -   id: flake8
+        exclude: migrations
+        args:
+        -   --max-line-length=120
+        -   --max-complexity=10
+        -   --ignore=W503,E501,C901
+
+-   repo: https://github.com/Lucas-C/pre-commit-hooks-safety
+    rev: v1.2.1
+    hooks:
+    -   id: python-safety-dependencies-check
+        files: requirements.txt
